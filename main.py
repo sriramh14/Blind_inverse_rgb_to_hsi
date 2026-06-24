@@ -146,7 +146,7 @@ LATENT_STATS_MAX_BATCHES: Optional[int] = 200
 # Stage 1 autoencoder objective.
 AE_L1_WEIGHT = 1.0
 AE_MRAE_WEIGHT = 0.20
-AE_SAM_WEIGHT = 0.01
+AE_SAM_WEIGHT = 0.01/90
 AE_SPECTRAL_GRAD_WEIGHT = 0.10
 
 # Stage 2 RGB latent initializer and forward adapter objective.
