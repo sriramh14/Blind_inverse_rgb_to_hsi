@@ -245,24 +245,24 @@ class LinearSpatialAttention(nn.Module):
 
 
 class HSIEncoder(nn.Module):
-    def __init__(self, bands: int, base_channels: int, latent_channels: int) -> None:
+    def __init__(self, bands: int, : int, latent_channels: int) -> None:
         super().__init__()
         self.stem = nn.Conv2d(bands, base_channels, 3, padding=1)
         self.level1 = nn.Sequential(
             ResidualBlock(base_channels, base_channels),
             ResidualBlock(base_channels, base_channels),
         )
-        self.down1 = Downsample(base_channels, base_channels / 2)
+        self.down1 = Downsample(base_channels, base_channels // 2)
         self.level2 = nn.Sequential(
-            ResidualBlock(base_channels /2, base_channels / 2),
-            ResidualBlock(base_channels / 2, base_channels / 2),
+            ResidualBlock(base_channels //2, base_channels // 2),
+            ResidualBlock(base_channels // 2, base_channels // 2),
         )
-        self.down2 = Downsample(base_channels / 2, base_channels / 4)
+        self.down2 = Downsample(base_channels // 2, base_channels // 4)
         self.level3 = nn.Sequential(
-            ResidualBlock(base_channels / 4, base_channels / 4),
-            ResidualBlock(base_channels / 4, base_channels / 4),
+            ResidualBlock(base_channels // 4, base_channels // 4),
+            ResidualBlock(base_channels // 4, base_channels // 4),
         )
-        self.to_latent = nn.Conv2d(base_channels / 4, latent_channels, 3, padding=1)
+        self.to_latent = nn.Conv2d(base_channels // 4, latent_channels, 3, padding=1)
 
     def forward(self, hsi: torch.Tensor) -> torch.Tensor:
        #Add skip connections
@@ -275,17 +275,17 @@ class HSIEncoder(nn.Module):
 class HSIDecoder(nn.Module):
     def __init__(self, bands: int, base_channels: int, latent_channels: int) -> None:
         super().__init__()
-        self.from_latent = nn.Conv2d(latent_channels, base_channels * 4, 3, padding=1)
+        self.from_latent = nn.Conv2d(latent_channels, base_channels // 4, 3, padding=1)
         self.level3 = nn.Sequential(
-            ResidualBlock(base_channels / 4, base_channels / 4),
-            ResidualBlock(base_channels / 4, base_channels / 4),
+            ResidualBlock(base_channels // 4, base_channels // 4),
+            ResidualBlock(base_channels // 4, base_channels // 4),
         )
-        self.up2 = Upsample(base_channels / 4, base_channels / 2)
+        self.up2 = Upsample(base_channels // 4, base_channels // 2)
         self.level2 = nn.Sequential(
-            ResidualBlock(base_channels / 2, base_channels / 2),
-            ResidualBlock(base_channels / 2, base_channels / 2),
+            ResidualBlock(base_channels // 2, base_channels // 2),
+            ResidualBlock(base_channels // 2, base_channels // 2),
         )
-        self.up1 = Upsample(base_channels / 2, base_channels)
+        self.up1 = Upsample(base_channels // 2, base_channels)
         self.level1 = nn.Sequential(
             ResidualBlock(base_channels, base_channels),
             ResidualBlock(base_channels, base_channels),
@@ -333,15 +333,15 @@ class RGBLatentInitializer(nn.Module):
         base = config.rgb_base_channels
         self.stem = nn.Conv2d(3, base, 3, padding=1)
         self.level1 = nn.Sequential(ResidualBlock(base, base), ResidualBlock(base, base))
-        self.down1 = Downsample(base, base / 2)
+        self.down1 = Downsample(base, base // 2)
         self.level2 = nn.Sequential(
-            ResidualBlock(base / 2, base / 2), ResidualBlock(base / 2, base / 2)
+            ResidualBlock(base // 2, base // 2), ResidualBlock(base // 2, base // 2)
         )
-        self.down2 = Downsample(base / 2, base / 4)
+        self.down2 = Downsample(base // 2, base // 4)
         self.level3 = nn.Sequential(
-            ResidualBlock(base / 4, base / 4), ResidualBlock(base / 4, base / 4)
+            ResidualBlock(base // 4, base // 4), ResidualBlock(base // 4, base // 4)
         )
-        self.output = nn.Conv2d(base / 4, config.latent_channels, 3, padding=1)
+        self.output = nn.Conv2d(base // 4, config.latent_channels, 3, padding=1)
 
     def forward(self, rgb: torch.Tensor) -> torch.Tensor:
         x = self.level1(self.stem(rgb)) + self.stem(rgb)
