@@ -129,9 +129,9 @@ SSIM_WINDOW_SIZE = 3
 # -----------------------------------------------------------------------------
 # TRAINING
 # -----------------------------------------------------------------------------
-STAGE1_EPOCHS = 150
-STAGE2_EPOCHS = 120
-STAGE3_EPOCHS = 200
+STAGE1_EPOCHS = 100
+STAGE2_EPOCHS = 100
+STAGE3_EPOCHS = 100
 STAGE1_LR = 2e-4
 STAGE2_LR = 2e-4
 STAGE3_LR = 1e-4
