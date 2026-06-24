@@ -245,7 +245,7 @@ class LinearSpatialAttention(nn.Module):
 
 
 class HSIEncoder(nn.Module):
-    def __init__(self, bands: int, : int, latent_channels: int) -> None:
+    def __init__(self, bands: int,base_channels : int, latent_channels: int) -> None:
         super().__init__()
         self.stem = nn.Conv2d(bands, base_channels, 3, padding=1)
         self.level1 = nn.Sequential(
